@@ -7,9 +7,9 @@ namespace TelegramBot
         /// <summary>
         /// объект, отвеающий за отправку сообщений клиенту
         /// </summary>
-        private TelegramBotClient _telegramClient;
+        private IBotClient _telegramClient;
 
-        public Bot(TelegramBotClient telegramClient)
+        public Bot(IBotClient telegramClient)
         {
             _telegramClient = telegramClient;
         }
