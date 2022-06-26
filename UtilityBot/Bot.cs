@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -7,14 +6,12 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Microsoft.Extensions.Hosting;
 
-namespace VoiceTexterBot
+namespace UtilityBot
 {
     internal class Bot : BackgroundService
     {
-        /// <summary>
-        /// объект, отвеающий за отправку сообщений клиенту
-        /// </summary>
         private ITelegramBotClient _telegramClient;
 
         public Bot(ITelegramBotClient telegramClient)
@@ -32,24 +29,10 @@ namespace VoiceTexterBot
 
             Console.WriteLine("Бот запущен");
         }
-
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            //  Обрабатываем нажатия на кнопки  из Telegram Bot API: https://core.telegram.org/bots/api#callbackquery
             if (update.Type == UpdateType.CallbackQuery)
-            {
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, "Вы нажали кнопку", cancellationToken: cancellationToken);
-                return;
-            }
-
-            // Обрабатываем входящие сообщения из Telegram Bot API: https://core.telegram.org/bots/api#message
-            if (update.Type == UpdateType.Message)
-            {
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id,
-                    $"Вы отправили сообщение {update.Message.Text}", 
-                    cancellationToken: cancellationToken);
-                return;
-            }
+                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, $"Длина сообщения: {update.Message.Text.Length} знаков", cancellationToken: cancellationToken);
         }
 
         Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -71,25 +54,5 @@ namespace VoiceTexterBot
 
             return Task.CompletedTask;
         }
-
-
-        ///// <summary>
-        ///// Обработчик входящих тектовых сообщений  
-        ///// </summary>
-        //private async Task HandleMessage(object sender, MessageEventArgs e)
-        //{
-        //    // Бот получил входящее сообщение пользователя
-        //    var messageText = e.Message.Text;
-
-        //    // Бот Отправляет ответ
-        //    _telegramClient.SendTextMessage(e.ChatId, "Ответ на сообщение пользователя")
-        //}
-
-        ///// <summary>
-        ///// Обработчик нажатий на кнопки
-        ///// </summary>
-        //private async Task HandleButtonClick(object sender, MessageEventArgs e)
-        //{
-        //}
     }
 }

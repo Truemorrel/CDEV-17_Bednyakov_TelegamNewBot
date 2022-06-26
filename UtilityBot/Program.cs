@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
+using System.Text;
 
-namespace VoiceTexterBot
+namespace UtilityBot
 {
-    public class Program
+    internal class Program
     {
         public static async Task Main(string[] args)
         {
@@ -28,7 +28,7 @@ namespace VoiceTexterBot
         static void ConfigureServices(IServiceCollection services)
         {
             // Регистрируем объект TelegramBotClient c токеном подключения
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5411416941:AAE7PHjxc6mBOUIzK6toLWuCLw3g10WpwJo"));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5252471202:AAHUiXi3gVYqPSSeHHN4saiZNC1XFhu48_k"));
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
         }
