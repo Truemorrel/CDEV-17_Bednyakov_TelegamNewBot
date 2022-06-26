@@ -1,16 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
-using VoiceTexterBot.Configuration;
-using VoiceTexterBot.Controllers;
-using VoiceTexterBot.Services;
+using System.Text;
 
-namespace VoiceTexterBot
+namespace UtilityBot
 {
-    public class Program
+    internal class Program
     {
         public static async Task Main(string[] args)
         {
@@ -30,30 +27,10 @@ namespace VoiceTexterBot
 
         static void ConfigureServices(IServiceCollection services)
         {
-            AppSettings appSettings = BuildAppSettings();
-            services.AddSingleton(BuildAppSettings);
-            services.AddSingleton<IFileHandler, AudioFileHandler>();
-            services.AddTransient<DefaultMessageController>();
-            services.AddTransient<VoiceMessageController>();
-            services.AddTransient<TextMessageController>();
-            services.AddSingleton<IStorage, MemoryStorage>();
-            services.AddTransient<InlineKeyboardController>();
-
             // Регистрируем объект TelegramBotClient c токеном подключения
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5252471202:AAHUiXi3gVYqPSSeHHN4saiZNC1XFhu48_k"));
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
-        }
-
-        static AppSettings BuildAppSettings()
-        {
-            return new AppSettings()
-            {
-                DownloadsFolder = "D:\\Repos\\Skillfactory",
-                BotToken = "5411416941:AAE7PHjxc6mBOUIzK6toLWuCLw3g10WpwJo",
-                AudioFileName = "audio",
-                InputAudioFormat = "ogg"
-            };
         }
     }
 }
