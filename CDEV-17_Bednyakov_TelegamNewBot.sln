@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegamNewBot", "TelegamNewBot\TelegamNewBot.csproj", "{9E434B6D-D4AA-4986-9D50-DCA25F128759}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoiceTexterBot", "VoiceTexterBot\VoiceTexterBot.csproj", "{9E434B6D-D4AA-4986-9D50-DCA25F128759}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
