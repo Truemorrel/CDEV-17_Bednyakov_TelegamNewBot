@@ -35,7 +35,7 @@ namespace VoiceTexterBot.Controllers
 
                     // передаем кнопки вместе с сообщением (параметр ReplyMarkup)
                     await _telegramClient.SendTextMessageAsync(message.Chat.Id,
-                        $"<b>  Наш бот превращает аудио в текст.</b> {Environment.NewLine}" +
+                        $"<b> Наш бот превращает аудио в текст. </b> {Environment.NewLine}" +
                         $"{Environment.NewLine}Можно записать сообщение и переслать другу, если лень печатать.{Environment.NewLine}",
                         cancellationToken: ct, parseMode: ParseMode.Html, replyMarkup: new InlineKeyboardMarkup(buttons));
                     break;

@@ -29,7 +29,7 @@ namespace VoiceTexterBot.Controllers
 
             await _audioFileHandler.Download(fileId, ct);
 
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Голосовое сообщение загружено", cancellationToken: ct);
+            await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Голосовое сообзщение загружено", cancellationToken: ct);
         }
     }
 }

@@ -10,22 +10,21 @@ using System.IO;
 
 namespace VoiceTexterBot.Services
 {
-    internal class AudioFileHandler : IFileHandler
+    public class AudioFileHandler : IFileHandler
     {
         private readonly AppSettings _appSettings;
         private readonly ITelegramBotClient _telegramBotClient;
 
-        public AudioFileHandler(AppSettings appSettings, ITelegramBotClient telegramBotClient)
+        public AudioFileHandler(ITelegramBotClient telegramBotClient, AppSettings appSettings)
         {
             _appSettings = appSettings;
             _telegramBotClient = telegramBotClient;
         }
+
         public async Task Download(string fileId, CancellationToken ct)
         {
             // Генерируем полный путь файла из конфигурации
-            string inputAudioFilePath = Path.Combine(
-                _appSettings.DownloadsFolder,
-                $"{_appSettings.AudioFileName}.{_appSettings.InputAudioFormat}");
+            string inputAudioFilePath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.InputAudioFormat}");
 
             using (FileStream destinationStream = File.Create(inputAudioFilePath))
             {
@@ -39,8 +38,9 @@ namespace VoiceTexterBot.Services
             }
         }
 
-        public string Process(string param)
+        public string Process(string languageCode)
         {
+            // Метод пока не реализован
             throw new NotImplementedException();
         }
     }

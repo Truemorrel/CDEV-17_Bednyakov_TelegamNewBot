@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 using VoiceTexterBot.Configuration;
 using VoiceTexterBot.Controllers;
@@ -31,13 +31,13 @@ namespace VoiceTexterBot
         static void ConfigureServices(IServiceCollection services)
         {
             AppSettings appSettings = BuildAppSettings();
-            services.AddSingleton(BuildAppSettings);
+            services.AddSingleton(BuildAppSettings());
             services.AddSingleton<IFileHandler, AudioFileHandler>();
             services.AddTransient<DefaultMessageController>();
             services.AddTransient<VoiceMessageController>();
             services.AddTransient<TextMessageController>();
-            services.AddSingleton<IStorage, MemoryStorage>();
             services.AddTransient<InlineKeyboardController>();
+            services.AddSingleton<IStorage, MemoryStorage>();
 
             // Регистрируем объект TelegramBotClient c токеном подключения
             services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
