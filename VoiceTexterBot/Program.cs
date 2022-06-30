@@ -52,7 +52,8 @@ namespace VoiceTexterBot
                 DownloadsFolder = "D:\\Repos\\Skillfactory",
                 BotToken = "5411416941:AAE7PHjxc6mBOUIzK6toLWuCLw3g10WpwJo",
                 AudioFileName = "audio",
-                InputAudioFormat = "ogg"
+                InputAudioFormat = "ogg",
+                OutputAudioFormat = "wav"
             };
         }
     }

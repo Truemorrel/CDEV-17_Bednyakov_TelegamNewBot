@@ -2,6 +2,8 @@
 {
     public class AppSettings
     {
+        public string OutputAudioFormat { get; set; }
+
         /// <summary>
         /// Токен Telegram API
         /// </summary>

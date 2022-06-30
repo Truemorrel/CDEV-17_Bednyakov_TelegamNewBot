@@ -5,6 +5,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using VoiceTexterBot.Configuration;
 using VoiceTexterBot.Services;
+using VoiceTexterBot.Controllers;
 
 namespace VoiceTexterBot.Controllers
 {
@@ -29,7 +30,10 @@ namespace VoiceTexterBot.Controllers
 
             await _audioFileHandler.Download(fileId, ct);
 
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Голосовое сообзщение загружено", cancellationToken: ct);
+            await _telegramClient.SendTextMessageAsync(
+                message.Chat.Id,
+                _audioFileHandler.Process(string.Empty),
+                cancellationToken: ct);
         }
     }
 }
