@@ -4,6 +4,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
 using System.Text;
+using UtilityBot.Settings;
+using UtilityBot.Exceptions;
+using UtilityBot.Processes;
 
 namespace UtilityBot
 {
@@ -27,10 +30,22 @@ namespace UtilityBot
 
         static void ConfigureServices(IServiceCollection services)
         {
+            AppConfig appSettings = MakeAppSettings();
             // Регистрируем объект TelegramBotClient c токеном подключения
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5252471202:AAHUiXi3gVYqPSSeHHN4saiZNC1XFhu48_k"));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
+            services.AddTransient<INumbers, Numbers>();
+            services.AddTransient<ILetters, Letters>();
+            services.AddSingleton<InputException>();
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
+        }
+
+        static AppConfig MakeAppSettings ()
+        {
+            return new AppConfig()
+            {
+                BotToken = "5252471202:AAHUiXi3gVYqPSSeHHN4saiZNC1XFhu48_k"
+            };
         }
     }
 }
