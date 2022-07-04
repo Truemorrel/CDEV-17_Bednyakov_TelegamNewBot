@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using UtilityBot.Exceptions;
 using System.Text.RegularExpressions;
 using UtilityBot.Processes;
+using UtilityBot.Controllers;
 
 namespace UtilityBot
 {
@@ -18,13 +19,23 @@ namespace UtilityBot
         private ITelegramBotClient _telegramClient;
         private INumbers _numberProcessor;
         private ILetters _letterProcessor;
+        private InlineKeyboardController _inlineKeyboardController;
+        private TextMessageController _textMessageController;
+        private DefaultMessageController _defaultMessageController;
 
-        public Bot(ITelegramBotClient telegramClient, INumbers numberProcessor, ILetters letterProcessor)
+        public Bot(ITelegramBotClient telegramClient,
+                   INumbers numberProcessor,
+                   ILetters letterProcessor,
+                   InlineKeyboardController keyboardController,
+                   TextMessageController textMessageController,
+                   DefaultMessageController defaultMessageController)
         {
             _telegramClient = telegramClient;
             _numberProcessor = numberProcessor;
             _letterProcessor = letterProcessor;
-
+            _inlineKeyboardController = keyboardController;
+            _textMessageController = textMessageController;
+            _defaultMessageController = defaultMessageController;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -39,20 +50,23 @@ namespace UtilityBot
         }
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            if (update.Type == UpdateType.CallbackQuery)
+            {
+                await _inlineKeyboardController.Handle(update.CallbackQuery, cancellationToken);
+                return;
+            };
+
             if (update.Type == UpdateType.Message)
             {
-                string input = update.Message.Text;
-                string result = string.Empty;
-                if (Regex.IsMatch(input, @"[^0-9 ]+"))
+                switch (update.Message!.Type)
                 {
-                    result = _letterProcessor.Operate(input);
+                    case MessageType.Text:
+                        await _textMessageController.Handle(update.Message, cancellationToken);
+                        return;
+                    default:
+                        await _defaultMessageController.Handle(update.Message, cancellationToken);
+                        return;
                 }
-                else
-                {
-                    result = _numberProcessor.Operate(input);
-                };
-                
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, result, cancellationToken: cancellationToken);
             }
         }
 
@@ -61,9 +75,9 @@ namespace UtilityBot
             // Задаем сообщение об ошибке в зависимости от того, какая именно ошибка произошла
             var errorMessage = exception switch
             {
-                ApiRequestException apiRequestException
+                ApiRequestException apiRequestException 
                     => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-                    InputException inputException
+                InputException inputException
                     => $"{inputException.Message}",
                 _ => exception.ToString()
             };

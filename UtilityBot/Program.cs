@@ -7,6 +7,8 @@ using System.Text;
 using UtilityBot.Settings;
 using UtilityBot.Exceptions;
 using UtilityBot.Processes;
+using UtilityBot.Controllers;
+using UtilityBot.Services;
 
 namespace UtilityBot
 {
@@ -33,9 +35,13 @@ namespace UtilityBot
             AppConfig appSettings = MakeAppSettings();
             // Регистрируем объект TelegramBotClient c токеном подключения
             services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
+            services.AddTransient<InlineKeyboardController>();
+            services.AddTransient<DefaultMessageController>();
             services.AddTransient<INumbers, Numbers>();
             services.AddTransient<ILetters, Letters>();
+            services.AddTransient<TextMessageController>();
             services.AddSingleton<InputException>();
+            services.AddSingleton<IStorage, MemoryStorage>();
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
         }

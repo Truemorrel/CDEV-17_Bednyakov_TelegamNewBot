@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UtilityBot.Processes
 {
-    internal interface INumbers : ISymbols
+    public interface INumbers : ISymbols
     {
     }
 }
